@@ -1,0 +1,704 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;background:#0F172A;color:#F1F5F9;min-height:100vh}
+.hdr{background:#0F172A;border-bottom:1px solid #1E293B;padding:12px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.brand{display:flex;align-items:center;gap:7px}
+.b703{background:#F59E0B;color:#78350F;font-size:9px;font-weight:700;padding:2px 6px;border-radius:3px}
+.nav{display:flex;gap:2px;flex-wrap:wrap;margin-top:2px}
+.tbtn{padding:5px 11px;border-radius:6px;border:none;cursor:pointer;font-size:11px;font-weight:500;background:transparent;color:#64748B;transition:all .15s;white-space:nowrap}
+.tbtn.on{background:#1E293B;color:#F1F5F9}
+.tbtn:hover:not(.on){color:#94A3B8}
+.content{padding:16px 18px 40px}
+.krow{display:flex;gap:7px;margin-bottom:14px;flex-wrap:wrap}
+.kc{background:#1E293B;border-radius:9px;padding:11px 13px;flex:1;min-width:80px;border:1px solid #334155}
+.kl{font-size:9px;color:#64748B;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px}
+.kv{font-size:19px;font-weight:800;line-height:1.1}
+.ks{font-size:9px;color:#475569;margin-top:1px}
+.panel{background:#1E293B;border-radius:11px;border:1px solid #334155;padding:14px}
+.stitle{font-size:9px;font-weight:800;color:#94A3B8;text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px;display:flex;align-items:center;gap:5px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:12px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:12px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.tbadge{display:inline-block;padding:2px 6px;border-radius:4px;font-size:9px;font-weight:600}
+.sw-b{background:#1e3a5f;color:#60A5FA}.bk-b{background:#3d2e00;color:#FBBF24}.rn-b{background:#0d3326;color:#34D399}.br-b{background:#3d0d0d;color:#F87171}
+table{width:100%;border-collapse:collapse;font-size:11px}
+th{padding:6px 9px;text-align:left;font-weight:700;color:#475569;font-size:9px;text-transform:uppercase;letter-spacing:.04em;background:#0F172A;border-bottom:1px solid #1E293B}
+td{padding:7px 9px;border-bottom:1px solid #1E293B;color:#94A3B8}
+tr:hover td{background:#172033;cursor:pointer}
+.fbtn{padding:4px 10px;border-radius:6px;border:1px solid #334155;background:#1E293B;color:#94A3B8;cursor:pointer;font-size:10px;font-weight:500}
+.fbtn.on{background:#0F172A;color:#F1F5F9;border-color:#475569}
+.zbr{display:flex;align-items:center;gap:7px;margin-bottom:6px}
+.zbg{flex:1;background:#0F172A;border-radius:3px;height:12px;overflow:hidden}
+.zf{height:100%;border-radius:3px;transition:width .6s}
+.upbtn{background:#1E293B;color:#94A3B8;border:1px solid #334155;padding:6px 11px;border-radius:6px;cursor:pointer;font-size:10px;display:flex;align-items:center;gap:4px}
+.upmsg{font-size:10px;padding:3px 8px;border-radius:4px;display:none}
+.pill{display:inline-block;padding:3px 8px;border-radius:20px;font-size:10px;font-weight:600}
+.inj-row{background:#172033;border-radius:8px;padding:11px 13px;margin-bottom:8px;border-left:3px solid transparent}
+.sev-1{border-color:#34D399}.sev-2{border-color:#FBBF24}.sev-3{border-color:#F87171}
+input[type=text],input[type=date],select,textarea{background:#0F172A;border:1px solid #334155;color:#F1F5F9;border-radius:6px;padding:6px 10px;font-size:11px;width:100%}
+input[type=range]{width:100%;accent-color:#60A5FA}
+.tag{display:inline-block;padding:2px 7px;border-radius:4px;font-size:9px;font-weight:600;margin-right:3px}
+.ok{background:#0d2a1a;color:#4ade80}.warn{background:#2a1f00;color:#FBBF24}.bad{background:#2a0d0d;color:#F87171}.info{background:#0a1e3d;color:#60A5FA}
+</style>
+
+<h2 style="position:absolute;width:1px;height:1px;overflow:hidden">Triathlon training dashboard v3 — FIT parsing, race predictor, injury tracker</h2>
+
+<div class="hdr">
+  <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+    <div class="brand">
+      <i class="ti ti-trophy" style="font-size:16px;color:#F59E0B" aria-hidden="true"></i>
+      <span style="font-size:15px;font-weight:800;letter-spacing:-.02em">TriData</span>
+      <span class="b703">70.3</span>
+    </div>
+    <div class="nav">
+      <button class="tbtn on" onclick="sw('overview')"><i class="ti ti-layout-dashboard" style="margin-right:2px;font-size:10px" aria-hidden="true"></i>Overview</button>
+      <button class="tbtn" onclick="sw('pmc')"><i class="ti ti-activity" style="margin-right:2px;font-size:10px" aria-hidden="true"></i>Fitness</button>
+      <button class="tbtn" onclick="sw('fit')"><i class="ti ti-wave-sine" style="margin-right:2px;font-size:10px" aria-hidden="true"></i>FIT Analysis</button>
+      <button class="tbtn" onclick="sw('race')"><i class="ti ti-flag" style="margin-right:2px;font-size:10px" aria-hidden="true"></i>Race Predictor</button>
+      <button class="tbtn" onclick="sw('injury')"><i class="ti ti-bandage" style="margin-right:2px;font-size:10px" aria-hidden="true"></i>Injury</button>
+      <button class="tbtn" onclick="sw('log')"><i class="ti ti-list" style="margin-right:2px;font-size:10px" aria-hidden="true"></i>Log</button>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:7px">
+    <span class="upmsg" id="umsg"></span>
+    <span id="actBadge" style="font-size:10px;color:#475569">28 activities</span>
+    <label class="upbtn" for="fileIn" style="cursor:pointer"><i class="ti ti-upload" aria-hidden="true"></i>Import FIT / CSV</label>
+    <input type="file" id="fileIn" accept=".fit,.csv" multiple style="display:none">
+  </div>
+</div>
+
+<div class="content" id="mc"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const CL={swim:'#3B82F6',bike:'#F59E0B',run:'#10B981',brick:'#EF4444',hr:'#EC4899',pwr:'#F97316',ctl:'#60A5FA',atl:'#F87171',tsb:'#34D399'};
+
+const SAMPLE=[
+  {id:1,date:'2025-01-06',type:'swim',name:'Morning Pool Swim',dur:2400,dist:2.8,hr:142,hrMax:168,cal:410,tss:62,laps:[]},
+  {id:2,date:'2025-01-07',type:'bike',name:'Base Endurance Ride',dur:5400,dist:48.2,hr:138,hrMax:172,cal:1120,tss:88,np:214,pwr:198,laps:[]},
+  {id:3,date:'2025-01-08',type:'run',name:'Easy Run',dur:2700,dist:9.4,hr:141,hrMax:162,cal:620,tss:55,pace:287,laps:[]},
+  {id:4,date:'2025-01-10',type:'bike',name:'Threshold Intervals',dur:4200,dist:38.1,hr:158,hrMax:183,cal:940,tss:102,np:251,pwr:226,laps:[{n:1,dur:600,dist:5.2,hr:155,pwr:195},{n:2,dur:300,dist:2.1,hr:174,pwr:275},{n:3,dur:300,dist:2.1,hr:178,pwr:280},{n:4,dur:300,dist:2.1,hr:172,pwr:265},{n:5,dur:300,dist:2.2,hr:176,pwr:278},{n:6,dur:300,dist:2.2,hr:180,pwr:285},{n:7,dur:300,dist:2.1,hr:177,pwr:272},{n:8,dur:300,dist:2.2,hr:175,pwr:270},{n:9,dur:300,dist:2.0,hr:168,pwr:255},{n:10,dur:600,dist:5.3,hr:148,pwr:180}]},
+  {id:5,date:'2025-01-11',type:'run',name:'Tempo Run',dur:3300,dist:12.1,hr:162,hrMax:178,cal:820,tss:78,pace:273,laps:[{n:1,dur:360,dist:1,hr:148,pace:360},{n:2,dur:285,dist:1,hr:158,pace:285},{n:3,dur:278,dist:1,hr:164,pace:278},{n:4,dur:275,dist:1,hr:166,pace:275},{n:5,dur:272,dist:1,hr:168,pace:272},{n:6,dur:270,dist:1,hr:170,pace:270},{n:7,dur:269,dist:1,hr:171,pace:269},{n:8,dur:268,dist:1,hr:172,pace:268},{n:9,dur:270,dist:1,hr:170,pace:270},{n:10,dur:275,dist:1,hr:167,pace:275},{n:11,dur:280,dist:1,hr:163,pace:280},{n:12,dur:283,dist:1.1,hr:160,pace:283}]},
+  {id:6,date:'2025-01-12',type:'swim',name:'Drills + Intervals',dur:3000,dist:3.2,hr:145,hrMax:171,cal:460,tss:70,laps:[]},
+  {id:7,date:'2025-01-14',type:'brick',name:'Brick: Bike+Run',dur:6600,dist:52.4,hr:155,hrMax:186,cal:1380,tss:128,laps:[]},
+  {id:8,date:'2025-01-15',type:'bike',name:'Long Ride',dur:10800,dist:96.3,hr:144,hrMax:175,cal:2180,tss:156,np:224,pwr:208,laps:[{n:1,dur:3600,dist:32.1,hr:138,pwr:195},{n:2,dur:3600,dist:33.8,hr:146,pwr:212},{n:3,dur:3600,dist:30.4,hr:148,pwr:218}]},
+  {id:9,date:'2025-01-17',type:'swim',name:'Open Water Sim',dur:2700,dist:3.0,hr:148,hrMax:174,cal:450,tss:68,laps:[]},
+  {id:10,date:'2025-01-19',type:'run',name:'Long Run',dur:4500,dist:17.2,hr:148,hrMax:169,cal:1140,tss:92,pace:261,laps:[{n:1,dur:270,dist:1,hr:138,pace:270},{n:2,dur:265,dist:1,hr:142,pace:265},{n:3,dur:263,dist:1,hr:144,pace:263},{n:4,dur:262,dist:1,hr:146,pace:262},{n:5,dur:261,dist:1,hr:148,pace:261},{n:6,dur:260,dist:1,hr:149,pace:260},{n:7,dur:261,dist:1,hr:150,pace:261},{n:8,dur:262,dist:1,hr:149,pace:262},{n:9,dur:264,dist:1,hr:151,pace:264},{n:10,dur:265,dist:1,hr:152,pace:265}]},
+  {id:11,date:'2025-01-21',type:'bike',name:'Recovery Spin',dur:3600,dist:28.6,hr:128,hrMax:151,cal:680,tss:42,np:166,pwr:158,laps:[]},
+  {id:12,date:'2025-01-22',type:'swim',name:'Swim Fitness Test',dur:2400,dist:3.1,hr:152,hrMax:178,cal:490,tss:74,laps:[]},
+  {id:13,date:'2025-01-24',type:'run',name:'Fartlek Run',dur:3000,dist:11.3,hr:156,hrMax:180,cal:740,tss:72,pace:265,laps:[]},
+  {id:14,date:'2025-01-26',type:'bike',name:'Threshold Ride',dur:5400,dist:50.1,hr:162,hrMax:185,cal:1200,tss:118,np:256,pwr:238,laps:[{n:1,dur:600,dist:5.8,hr:145,pwr:192},{n:2,dur:1200,dist:11.8,hr:165,pwr:255},{n:3,dur:1200,dist:11.9,hr:168,pwr:260},{n:4,dur:1200,dist:12.0,hr:166,pwr:257},{n:5,dur:1200,dist:8.6,hr:148,pwr:195}]},
+  {id:15,date:'2025-01-28',type:'brick',name:'Race Sim Brick',dur:8100,dist:71.2,hr:159,hrMax:188,cal:1680,tss:142,laps:[]},
+  {id:16,date:'2025-01-29',type:'run',name:'Medium Long Run',dur:3900,dist:14.8,hr:150,hrMax:170,cal:980,tss:82,pace:264,laps:[]},
+  {id:17,date:'2025-02-02',type:'swim',name:'Technique Session',dur:2700,dist:3.3,hr:139,hrMax:163,cal:430,tss:64,laps:[]},
+  {id:18,date:'2025-02-04',type:'bike',name:'Power Intervals',dur:4500,dist:40.8,hr:163,hrMax:187,cal:1020,tss:114,np:268,pwr:242,laps:[{n:1,dur:600,dist:5.5,hr:148,pwr:198},{n:2,dur:480,dist:4.6,hr:172,pwr:285},{n:3,dur:480,dist:4.7,hr:175,pwr:288},{n:4,dur:480,dist:4.6,hr:173,pwr:283},{n:5,dur:480,dist:4.7,hr:176,pwr:290},{n:6,dur:480,dist:4.5,hr:171,pwr:282},{n:7,dur:600,dist:5.6,hr:152,pwr:200},{n:8,dur:900,dist:7.6,hr:145,pwr:188}]},
+  {id:19,date:'2025-02-06',type:'run',name:'Progressive Long Run',dur:4800,dist:18.4,hr:153,hrMax:174,cal:1210,tss:98,pace:261,laps:[]},
+  {id:20,date:'2025-02-08',type:'bike',name:'Weekend Long Ride',dur:12600,dist:112.0,hr:145,hrMax:178,cal:2540,tss:178,np:231,pwr:212,laps:[{n:1,dur:4200,dist:38.0,hr:140,pwr:200},{n:2,dur:4200,dist:38.8,hr:147,pwr:215},{n:3,dur:4200,dist:35.2,hr:149,pwr:220}]},
+  {id:21,date:'2025-02-10',type:'swim',name:'Race Pace Sets',dur:3000,dist:3.5,hr:155,hrMax:176,cal:520,tss:78,laps:[]},
+  {id:22,date:'2025-02-12',type:'run',name:'Race Pace Run',dur:3300,dist:12.8,hr:161,hrMax:180,cal:850,tss:84,pace:258,laps:[{n:1,dur:274,dist:1,hr:148,pace:274},{n:2,dur:262,dist:1,hr:156,pace:262},{n:3,dur:259,dist:1,hr:160,pace:259},{n:4,dur:257,dist:1,hr:163,pace:257},{n:5,dur:256,dist:1,hr:165,pace:256},{n:6,dur:255,dist:1,hr:166,pace:255},{n:7,dur:256,dist:1,hr:166,pace:256},{n:8,dur:258,dist:1,hr:164,pace:258},{n:9,dur:259,dist:1,hr:162,pace:259},{n:10,dur:261,dist:1,hr:161,pace:261},{n:11,dur:263,dist:1,hr:160,pace:263},{n:12,dur:265,dist:.8,hr:158,pace:265}]},
+  {id:23,date:'2025-02-14',type:'brick',name:'Brick Workout',dur:7200,dist:62.5,hr:157,hrMax:184,cal:1480,tss:135,laps:[]},
+  {id:24,date:'2025-02-16',type:'bike',name:'Endurance + Surges',dur:6300,dist:58.7,hr:152,hrMax:182,cal:1380,tss:122,np:248,pwr:221,laps:[]},
+  {id:25,date:'2025-02-19',type:'swim',name:'Threshold Swim',dur:3000,dist:3.6,hr:156,hrMax:179,cal:540,tss:80,laps:[]},
+  {id:26,date:'2025-02-21',type:'run',name:'Taper Run',dur:2700,dist:10.2,hr:142,hrMax:162,cal:670,tss:58,pace:265,laps:[]},
+  {id:27,date:'2025-02-24',type:'bike',name:'Taper Ride',dur:4200,dist:38.0,hr:137,hrMax:162,cal:840,tss:68,np:208,pwr:195,laps:[]},
+  {id:28,date:'2025-03-01',type:'run',name:'Pre-race Shake Out',dur:1800,dist:6.4,hr:132,hrMax:154,cal:420,tss:34,pace:281,laps:[]}
+];
+
+const DEFAULT_INJURIES=[
+  {id:1,date:'2025-01-18',bodyPart:'Right shin',type:'Tibial stress reaction',severity:3,status:'monitoring',notes:'Pain on palpation mid-tibia. Reduced run volume. Sports med referral recommended.',activities:['run'],missedDays:0,resolved:false},
+  {id:2,date:'2024-12-02',bodyPart:'Left knee',type:'IT Band tightness',severity:2,status:'resolved',notes:'Lateral knee discomfort after long ride. Resolved with foam rolling and bike fit adjustment.',activities:['bike'],missedDays:3,resolved:true}
+];
+
+let acts=[...SAMPLE],injuries=[...DEFAULT_INJURIES],tab='overview',filt='all',selId=null,injFormOpen=false,charts={};
+let fitSettings={ftp:250,maxHR:190,raceDate:'2025-04-13',swimPace100:105,runFTP:260};
+
+function fd(s){if(!s||s<=0)return'0:00';const h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sc=s%60;return h>0?h+':'+String(m).padStart(2,'0')+':'+String(sc).padStart(2,'0'):m+':'+String(sc).padStart(2,'0');}
+function fp(s){if(!s||s<=0)return'—';const m=Math.floor(s/60),sc=Math.round(s%60);return m+':'+String(sc).padStart(2,'0')+'/km';}
+function fdist(km,t){return t==='swim'?Math.round(km*1000)+'m':km.toFixed(1)+'km';}
+function badge(t){const m={swim:'sw-b',bike:'bk-b',run:'rn-b',brick:'br-b'};return`<span class="tbadge ${m[t]||'rn-b'}">${t[0].toUpperCase()+t.slice(1)}</span>`;}
+function dch(){Object.values(charts).forEach(c=>{try{c.destroy();}catch(e){}});charts={};}
+function sw(t){tab=t;document.querySelectorAll('.tbtn').forEach((b,i)=>{b.classList.toggle('on',['overview','pmc','fit','race','injury','log'][i]===t);});render();}
+
+function pmcData(){
+  const s=[...acts].sort((a,b)=>new Date(a.date)-new Date(b.date));
+  let ctl=0,atl=0;const out=[];
+  s.forEach(a=>{const tss=a.tss||0;ctl=ctl+(tss-ctl)*(1-Math.exp(-1/42));atl=atl+(tss-atl)*(1-Math.exp(-1/7));out.push({date:a.date,ctl:+ctl.toFixed(1),atl:+atl.toFixed(1),tsb:+(ctl-atl).toFixed(1)});});
+  return out;
+}
+function weeks(){
+  const W={};
+  acts.forEach(a=>{
+    const d=new Date(a.date),m=new Date(d);m.setDate(d.getDate()-((d.getDay()+6)%7));
+    const k=m.toISOString().split('T')[0];
+    if(!W[k])W[k]={w:k,swim:0,bike:0,run:0,tss:0};
+    if(a.type==='swim')W[k].swim+=a.dist||0;
+    else if(['bike','brick'].includes(a.type))W[k].bike+=a.dist||0;
+    else if(a.type==='run')W[k].run+=a.dist||0;
+    W[k].tss+=a.tss||0;
+  });
+  return Object.values(W).sort((a,b)=>new Date(a.w)-new Date(b.w));
+}
+function hrZones(act){
+  const max=act.hrMax||fitSettings.maxHR;
+  const breaks=[.6,.7,.8,.9,1.0].map(f=>Math.round(f*max));
+  const names=['Z1 Recovery','Z2 Base','Z3 Tempo','Z4 Threshold','Z5 VO2max'];
+  const colors=['#93C5FD','#6EE7B7','#FDE68A','#FCA5A5','#F87171'];
+  if(!act.hrStream||act.hrStream.length<10){
+    const pcts=[5,42,28,18,7];
+    return pcts.map((p,i)=>({name:names[i],pct:p,sec:Math.round((act.dur||0)*(p/100)),color:colors[i]}));
+  }
+  const counts=[0,0,0,0,0];
+  act.hrStream.forEach(h=>{
+    if(h<breaks[0])counts[0]++;else if(h<breaks[1])counts[1]++;else if(h<breaks[2])counts[2]++;else if(h<breaks[3])counts[3]++;else counts[4]++;
+  });
+  const tot=act.hrStream.length;
+  return counts.map((c,i)=>({name:names[i],pct:Math.round((c/tot)*100),sec:Math.round((c/tot)*(act.dur||0)),color:colors[i]}));
+}
+
+function powerCurve(pwrStream){
+  if(!pwrStream||pwrStream.length<60)return[];
+  const durations=[1,5,10,20,30,60,120,300,600,1200,1800,3600];
+  return durations.filter(d=>d<=pwrStream.length).map(d=>{
+    let best=0;
+    for(let i=0;i<=pwrStream.length-d;i++){
+      const avg=pwrStream.slice(i,i+d).reduce((s,p)=>s+p,0)/d;
+      if(avg>best)best=avg;
+    }
+    return{dur:d,watts:Math.round(best)};
+  });
+}
+
+function render(){
+  dch();
+  const el=document.getElementById('mc');
+  if(tab==='overview')rOverview(el);
+  else if(tab==='pmc')rFitness(el);
+  else if(tab==='fit')rFIT(el);
+  else if(tab==='race')rRace(el);
+  else if(tab==='injury')rInjury(el);
+  else rLog(el);
+}
+
+function rOverview(el){
+  const fm=pmcData(),last=fm[fm.length-1]||{ctl:0,atl:0,tsb:0};
+  const totTSS=acts.reduce((s,a)=>s+(a.tss||0),0);
+  const swimD=acts.filter(a=>a.type==='swim').reduce((s,a)=>s+(a.dist||0),0);
+  const bikeD=acts.filter(a=>['bike','brick'].includes(a.type)).reduce((s,a)=>s+(a.dist||0),0);
+  const runD=acts.filter(a=>['run','brick'].includes(a.type)).reduce((s,a)=>s+(a.dist||0),0);
+  const tc=last.tsb<-10?'#F87171':last.tsb>5?'#34D399':'#FBBF24';
+  const tl=last.tsb<-10?'Fatigued':last.tsb>5?'Race ready':'Building';
+  const wks=weeks();
+  const activeInj=injuries.filter(i=>!i.resolved);
+  const fitActs=acts.filter(a=>a.fitParsed);
+  const raceDate=new Date(fitSettings.raceDate);
+  const daysToRace=Math.max(0,Math.round((raceDate-new Date())/(1000*60*60*24)));
+  el.innerHTML=`
+  ${activeInj.length?`<div style="background:#2a1500;border:1px solid #854d0e;border-radius:8px;padding:9px 13px;margin-bottom:12px;font-size:11px;color:#FBBF24;display:flex;align-items:center;gap:8px"><i class="ti ti-bandage" aria-hidden="true"></i>${activeInj.map(i=>i.bodyPart+' — '+i.type).join(' · ')} <button onclick="sw('injury')" style="margin-left:auto;background:transparent;border:1px solid #854d0e;color:#FBBF24;padding:2px 8px;border-radius:4px;cursor:pointer;font-size:10px">View</button></div>`:''}
+  <div class="krow">
+    <div class="kc"><div class="kl">Fitness CTL</div><div class="kv" style="color:#60A5FA">${last.ctl}</div><div class="ks">42-day load</div></div>
+    <div class="kc"><div class="kl">Fatigue ATL</div><div class="kv" style="color:#F87171">${last.atl}</div><div class="ks">7-day load</div></div>
+    <div class="kc"><div class="kl">Form TSB</div><div class="kv" style="color:${tc}">${last.tsb}</div><div class="ks">${tl}</div></div>
+    <div class="kc"><div class="kl">Total TSS</div><div class="kv" style="color:#A78BFA">${totTSS}</div><div class="ks">${acts.length} sessions</div></div>
+    <div class="kc"><div class="kl">Days to race</div><div class="kv" style="color:#FBBF24">${daysToRace}</div><div class="ks">${fitSettings.raceDate}</div></div>
+    ${fitActs.length?`<div class="kc"><div class="kl">FIT files</div><div class="kv" style="color:#4ade80">${fitActs.length}</div><div class="ks">parsed</div></div>`:''}
+  </div>
+  <div class="panel" style="margin-bottom:11px">
+    <div class="stitle"><i class="ti ti-activity" aria-hidden="true"></i>PMC — fitness / fatigue / form</div>
+    <div style="display:flex;gap:12px;margin-bottom:7px;font-size:10px">
+      ${[['CTL','#60A5FA',last.ctl],['ATL','#F87171',last.atl],['TSB',tc,last.tsb]].map(([l,c,v])=>`<span style="display:flex;align-items:center;gap:3px"><span style="width:7px;height:7px;border-radius:50%;background:${c}"></span><span style="color:#475569">${l}:</span><strong style="color:${c}">${v}</strong></span>`).join('')}
+    </div>
+    <div style="position:relative;height:160px"><canvas id="pmcC" role="img" aria-label="PMC chart">PMC data.</canvas></div>
+  </div>
+  <div class="grid2">
+    <div class="panel">
+      <div class="stitle"><i class="ti ti-calendar-week" aria-hidden="true"></i>Weekly TSS</div>
+      <div style="position:relative;height:110px"><canvas id="wkC" role="img" aria-label="Weekly TSS">TSS.</canvas></div>
+      <div style="font-size:9px;color:#475569;margin-top:5px">Avg: <strong style="color:#94A3B8">${Math.round(wks.reduce((s,w)=>s+w.tss,0)/(wks.length||1))}</strong>/wk · Peak: <strong style="color:#94A3B8">${Math.max(1,...wks.map(w=>w.tss))}</strong></div>
+    </div>
+    <div class="panel">
+      <div class="stitle"><i class="ti ti-chart-bar" aria-hidden="true"></i>Discipline volume (km)</div>
+      <div style="position:relative;height:110px"><canvas id="volC" role="img" aria-label="Volume by discipline">Volume.</canvas></div>
+    </div>
+  </div>
+  <div class="grid4">
+    ${['swim','bike','run','brick'].map(t=>{const a=acts.filter(x=>x.type===t);const tss=a.reduce((s,x)=>s+(x.tss||0),0);const d=a.reduce((s,x)=>s+(x.dist||0),0);return`<div class="panel">${badge(t)}<div style="font-size:19px;font-weight:800;color:${CL[t]||'#94A3B8'};margin-top:7px">${a.length}</div><div style="font-size:9px;color:#475569;margin-top:1px">${tss} TSS · ${t==='swim'?Math.round(d*1000)+'m':d.toFixed(0)+'km'}</div></div>`;}).join('')}
+  </div>`;
+  setTimeout(()=>{
+    const fm2=pmcData(),wks2=weeks();
+    charts.pmc=new Chart(document.getElementById('pmcC'),{type:'line',data:{labels:fm2.map(f=>f.date.slice(5)),datasets:[{label:'CTL',data:fm2.map(f=>f.ctl),borderColor:'#60A5FA',tension:.4,pointRadius:1,borderWidth:2.5},{label:'ATL',data:fm2.map(f=>f.atl),borderColor:'#F87171',tension:.4,pointRadius:1,borderWidth:2.5},{label:'TSB',data:fm2.map(f=>f.tsb),borderColor:'#34D399',tension:.4,pointRadius:1,borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#475569',font:{size:8},maxTicksLimit:10}},y:{ticks:{color:'#475569',font:{size:9}}}}}});
+    charts.wk=new Chart(document.getElementById('wkC'),{type:'bar',data:{labels:wks2.map(w=>w.w.slice(5)),datasets:[{label:'TSS',data:wks2.map(w=>w.tss),backgroundColor:'#3B82F6',borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#475569',font:{size:8},maxTicksLimit:8}},y:{ticks:{color:'#475569',font:{size:8}}}}}});
+    charts.vol=new Chart(document.getElementById('volC'),{type:'bar',data:{labels:wks2.map(w=>w.w.slice(5)),datasets:[{label:'Swim',data:wks2.map(w=>+w.swim.toFixed(1)),backgroundColor:'#3B82F6',borderRadius:2},{label:'Bike',data:wks2.map(w=>+w.bike.toFixed(1)),backgroundColor:'#F59E0B',borderRadius:2},{label:'Run',data:wks2.map(w=>+w.run.toFixed(1)),backgroundColor:'#10B981',borderRadius:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#475569',font:{size:8},maxTicksLimit:8}},y:{ticks:{color:'#475569',font:{size:8},callback:v=>v+'km'}}}}});
+  },80);
+}
+
+function rFitness(el){
+  const fm=pmcData(),last=fm[fm.length-1]||{ctl:0,atl:0,tsb:0};
+  const swimD=acts.filter(a=>a.type==='swim').reduce((s,a)=>s+(a.dist||0),0);
+  const bikeD=acts.filter(a=>['bike','brick'].includes(a.type)).reduce((s,a)=>s+(a.dist||0),0);
+  const runD=acts.filter(a=>['run','brick'].includes(a.type)).reduce((s,a)=>s+(a.dist||0),0);
+  const hrD=acts.filter(a=>a.hr).sort((a,b)=>new Date(a.date)-new Date(b.date));
+  const hasRealZones=acts.some(a=>a.hrStream&&a.hrStream.length>10);
+  let zTots=[0,0,0,0,0],zSec=0;
+  if(hasRealZones)acts.filter(a=>a.hrStream&&a.hrStream.length>10).forEach(a=>{hrZones(a).forEach((z,i)=>zTots[i]+=z.sec);zSec+=a.dur||0;});
+  const estZ=[{name:'Z1 Recovery',color:'#93C5FD'},{name:'Z2 Base',color:'#6EE7B7'},{name:'Z3 Tempo',color:'#FDE68A'},{name:'Z4 Threshold',color:'#FCA5A5'},{name:'Z5 VO2max',color:'#F87171'}];
+  const zones=hasRealZones?zTots.map((s,i)=>({...estZ[i],pct:Math.round((s/(zSec||1))*100),sec:s})):[{...estZ[0],pct:5,sec:0},{...estZ[1],pct:42,sec:0},{...estZ[2],pct:28,sec:0},{...estZ[3],pct:18,sec:0},{...estZ[4],pct:7,sec:0}];
+  const tc=last.tsb<-10?'#F87171':last.tsb>5?'#34D399':'#FBBF24';
+  el.innerHTML=`
+  <div class="panel" style="margin-bottom:11px">
+    <div class="stitle"><i class="ti ti-activity" aria-hidden="true"></i>Full PMC</div>
+    <div style="position:relative;height:180px"><canvas id="pmcF" role="img" aria-label="Full PMC">PMC.</canvas></div>
+    <div style="display:flex;gap:12px;margin-top:8px;font-size:10px">
+      ${[['CTL','#60A5FA',last.ctl,'Fitness'],['ATL','#F87171',last.atl,'Fatigue'],['TSB',tc,last.tsb,'Form']].map(([k,c,v,sub])=>`<span style="display:flex;align-items:center;gap:3px"><span style="width:7px;height:7px;border-radius:50%;background:${c}"></span><span style="color:#475569">${sub}:</span><strong style="color:${c}">${v}</strong></span>`).join('')}
+    </div>
+  </div>
+  <div class="grid2">
+    <div class="panel">
+      <div class="stitle"><i class="ti ti-heart" aria-hidden="true"></i>HR trend</div>
+      <div style="position:relative;height:130px"><canvas id="hrF" role="img" aria-label="HR trend">HR.</canvas></div>
+    </div>
+    <div class="panel">
+      <div class="stitle"><i class="ti ti-chart-bar" aria-hidden="true"></i>Zone distribution ${hasRealZones?'<span style="color:#4ade80;font-weight:400">real FIT</span>':'<span style="color:#FBBF24;font-weight:400">estimated</span>'}</div>
+      ${zones.map(z=>`<div class="zbr"><div style="width:100px;font-size:9px;color:#64748B">${z.name}</div><div class="zbg"><div class="zf" style="width:${z.pct}%;background:${z.color}"></div></div><div style="width:28px;text-align:right;font-size:10px;font-weight:700;color:#F1F5F9">${z.pct}%</div></div>`).join('')}
+    </div>
+  </div>
+  <div style="background:#0F172A;border-radius:11px;padding:15px;border:1px solid #1E293B">
+    <div style="color:#F1F5F9;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;margin-bottom:11px"><i class="ti ti-trophy" style="color:#F59E0B;margin-right:4px" aria-hidden="true"></i>70.3 race readiness</div>
+    <div class="grid3">
+      ${[{l:'Swim',t:1.9,c:swimD,u:'km',col:'#60A5FA'},{l:'Bike vol',t:500,c:bikeD,u:'km',col:'#FBBF24'},{l:'Run vol',t:200,c:runD,u:'km',col:'#34D399'}].map(item=>{const p=Math.min(100,Math.round((item.c/item.t)*100));const bc=p>=80?'#34D399':p>=50?'#FBBF24':'#F87171';return`<div style="background:#1E293B;border-radius:7px;padding:11px"><div style="font-size:9px;color:#64748B;margin-bottom:5px">${item.l}</div><div style="background:#0F172A;border-radius:3px;height:5px;margin-bottom:6px"><div style="width:${p}%;height:100%;background:${bc};border-radius:3px"></div></div><div style="font-size:11px;color:#E2E8F0;font-weight:700">${item.c.toFixed(1)} ${item.u}</div></div>`;}).join('')}
+    </div>
+  </div>`;
+  setTimeout(()=>{
+    charts.pmcF=new Chart(document.getElementById('pmcF'),{type:'line',data:{labels:fm.map(f=>f.date.slice(5)),datasets:[{label:'CTL',data:fm.map(f=>f.ctl),borderColor:'#60A5FA',tension:.4,pointRadius:1,borderWidth:2.5},{label:'ATL',data:fm.map(f=>f.atl),borderColor:'#F87171',tension:.4,pointRadius:1,borderWidth:2.5},{label:'TSB',data:fm.map(f=>f.tsb),borderColor:'#34D399',tension:.4,pointRadius:1,borderWidth:2}]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#475569',font:{size:8},maxTicksLimit:10}},y:{ticks:{color:'#475569',font:{size:8}}}}}});
+    charts.hrF=new Chart(document.getElementById('hrF'),{type:'line',data:{labels:hrD.map(a=>a.date.slice(5)),datasets:[{label:'Avg HR',data:hrD.map(a=>a.hr),borderColor:'#EC4899',backgroundColor:'rgba(236,72,153,.07)',tension:.4,pointRadius:2,borderWidth:2,fill:true}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#475569',font:{size:8},maxTicksLimit:8}},y:{min:110,ticks:{color:'#475569',font:{size:8},callback:v=>v+'bpm'}}}}});
+  },80);
+}
+
+function rFIT(el){
+  const fitActs=acts.filter(a=>a.fitParsed&&(a.pwrStream||a.hrStream));
+  const allPwr=acts.filter(a=>a.pwrStream&&a.pwrStream.length>60);
+  const selFit=selId?acts.find(a=>a.id===selId):allPwr[0]||fitActs[0]||null;
+  const runs=acts.filter(a=>a.pace&&a.hr).sort((a,b)=>new Date(a.date)-new Date(b.date));
+  const bikes=acts.filter(a=>a.np).sort((a,b)=>new Date(a.date)-new Date(b.date));
+
+  let pcData=[];
+  if(selFit&&selFit.pwrStream)pcData=powerCurve(selFit.pwrStream);
+  else if(allPwr.length===0){
+    pcData=[{dur:1,watts:410},{dur:5,watts:388},{dur:10,watts:372},{dur:20,watts:352},{dur:30,watts:340},{dur:60,watts:320},{dur:120,watts:298},{dur:300,watts:272},{dur:600,watts:256},{dur:1200,watts:242},{dur:1800,watts:231},{dur:3600,watts:214}];
+  }
+
+  el.innerHTML=`
+  ${fitActs.length?`<div style="background:#0d2a1a;border:1px solid #166534;border-radius:7px;padding:8px 12px;margin-bottom:11px;font-size:10px;color:#4ade80"><i class="ti ti-check" aria-hidden="true"></i> ${fitActs.length} FIT file${fitActs.length>1?'s':''} loaded — real HR streams, power curves, and cadence available</div>`:`<div style="background:#1a1e2a;border:1px solid #334155;border-radius:7px;padding:8px 12px;margin-bottom:11px;font-size:10px;color:#64748B"><i class="ti ti-upload" style="margin-right:4px" aria-hidden="true"></i>Import .fit files to unlock real power curves and HR streams. Showing estimated data below.</div>`}
+  ${allPwr.length>1?`<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:11px">${allPwr.map(a=>`<button onclick="selAct(${a.id})" class="fbtn ${selFit&&selFit.id===a.id?'on':''}" style="font-size:9px">${badge(a.type)} ${a.date.slice(5)} ${a.name.slice(0,15)}</button>`).join('')}</div>`:''}
+  <div class="panel" style="margin-bottom:11px">
+    <div class="stitle"><i class="ti ti-bolt" aria-hidden="true"></i>Power duration curve ${selFit&&selFit.fitParsed?'<span style="color:#4ade80;font-weight:400">FIT</span>':'<span style="color:#FBBF24;font-weight:400">estimated</span>'}</div>
+    <div style="position:relative;height:170px"><canvas id="pcC" role="img" aria-label="Power duration curve">Power curve.</canvas></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px">
+      ${pcData.slice(0,6).map(p=>`<div style="background:#0F172A;border-radius:5px;padding:5px 9px;text-align:center"><div style="font-size:9px;color:#475569">${p.dur>=3600?Math.round(p.dur/3600)+'h':p.dur>=60?Math.round(p.dur/60)+'min':p.dur+'s'}</div><div style="font-size:13px;font-weight:700;color:#F97316">${p.watts}W</div></div>`).join('')}
+    </div>
+  </div>
+  <div class="grid2">
+    <div class="panel">
+      <div class="stitle"><i class="ti ti-run" aria-hidden="true"></i>Aerobic efficiency (run)</div>
+      <div style="position:relative;height:140px"><canvas id="aeC" role="img" aria-label="HR vs pace scatter">Aerobic efficiency.</canvas></div>
+      <div style="font-size:9px;color:#475569;margin-top:5px">Lower-left = faster + lower HR = improving fitness</div>
+    </div>
+    <div class="panel">
+      <div class="stitle"><i class="ti ti-bike" aria-hidden="true"></i>NP vs avg power trend</div>
+      <div style="position:relative;height:140px"><canvas id="npC" role="img" aria-label="NP vs avg power">Power.</canvas></div>
+      <div style="font-size:9px;color:#475569;margin-top:5px">Variability index = NP/avg. Closer to 1.0 = steadier effort</div>
+    </div>
+  </div>
+  ${selFit?`<div class="panel">
+    <div class="stitle"><i class="ti ti-heart" aria-hidden="true"></i>HR zones — ${selFit.name}</div>
+    ${hrZones(selFit).map(z=>`<div class="zbr"><div style="width:100px;font-size:9px;color:#64748B">${z.name}</div><div class="zbg"><div class="zf" style="width:${z.pct}%;background:${z.color}"></div></div><div style="width:28px;text-align:right;font-size:10px;font-weight:700;color:#F1F5F9">${z.pct}%</div><div style="font-size:9px;color:#475569;margin-left:6px">${fd(z.sec)}</div></div>`).join('')}
+  </div>`:''}`;
+  setTimeout(()=>{
+    const durLabels=pcData.map(p=>p.dur>=3600?Math.round(p.dur/3600)+'h':p.dur>=60?Math.round(p.dur/60)+'m':p.dur+'s');
+    const ftpLine=pcData.map(()=>fitSettings.ftp);
+    charts.pc=new Chart(document.getElementById('pcC'),{type:'line',data:{labels:durLabels,datasets:[{label:'Power curve',data:pcData.map(p=>p.watts),borderColor:'#F97316',backgroundColor:'rgba(249,115,22,.08)',tension:.3,pointRadius:4,borderWidth:2.5,fill:true},{label:'FTP',data:ftpLine,borderColor:'#334155',borderDash:[5,4],borderWidth:1.5,pointRadius:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#475569',font:{size:9}}},y:{ticks:{color:'#475569',font:{size:9},callback:v=>v+'W'}}}}});
+    const runPts=runs.filter(r=>r.hr&&r.pace).map(r=>({x:r.pace,y:r.hr,date:r.date}));
+    if(runPts.length){const maxP=Math.max(...runPts.map(p=>p.x))*1.03,minP=Math.min(...runPts.map(p=>p.x))*.97;charts.ae=new Chart(document.getElementById('aeC'),{type:'scatter',data:{datasets:[{label:'Run',data:runPts,backgroundColor:'rgba(52,211,153,.65)',pointRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${fp(c.parsed.x)} @ ${c.parsed.y}bpm · ${c.raw.date}`}}},scales:{x:{min:minP,max:maxP,ticks:{color:'#475569',font:{size:8},callback:v=>fp(v)}},y:{ticks:{color:'#475569',font:{size:8},callback:v=>v+'bpm'}}}}});}
+    if(bikes.length){const vi=bikes.map(b=>b.np&&b.pwr?+(b.np/b.pwr).toFixed(2):null).filter(Boolean);charts.np=new Chart(document.getElementById('npC'),{type:'line',data:{labels:bikes.map(b=>b.date.slice(5)),datasets:[{label:'NP',data:bikes.map(b=>b.np||0),borderColor:'#F97316',tension:.3,pointRadius:3,borderWidth:2},{label:'Avg',data:bikes.map(b=>b.pwr||0),borderColor:'#FDE68A',tension:.3,pointRadius:3,borderWidth:1.5,borderDash:[4,3]}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#475569',font:{size:8},maxTicksLimit:6}},y:{ticks:{color:'#475569',font:{size:8},callback:v=>v+'W'}}}}});}
+  },80);
+}
+
+function rRace(el){
+  const fm=pmcData(),last=fm[fm.length-1]||{ctl:0,atl:0,tsb:0};
+  const ftp=fitSettings.ftp,maxHR=fitSettings.maxHR;
+  const raceDate=new Date(fitSettings.raceDate);
+  const daysToRace=Math.max(0,Math.round((raceDate-new Date())/(1000*60*60*24)));
+  const runs=acts.filter(a=>a.pace).sort((a,b)=>new Date(a.date)-new Date(b.date));
+  const bestPace=runs.length?Math.min(...runs.map(r=>r.pace)):260;
+  const avgRecentPace=runs.slice(-5).length?Math.round(runs.slice(-5).reduce((s,r)=>s+r.pace,0)/runs.slice(-5).length):265;
+  const bikes=acts.filter(a=>a.np);
+  const bestNP=bikes.length?Math.max(...bikes.map(b=>b.np)):0;
+
+  const swimSec=Math.round((1900/100)*fitSettings.swimPace100);
+  const t1=90;
+  const bikeSec=Math.round((90000/1000)/(((ftp*.75)/fitSettings.ftp)*35)*3600);
+  const bikePredSec=Math.round(90/(((ftp*.75)/250)*34.5)*3600);
+  const runPredPace=Math.round(avgRecentPace*(1+(0.03*(last.atl/Math.max(last.ctl,1)))));
+  const runSec=Math.round(runPredPace*21.1);
+  const t2=60;
+  const totalSec=swimSec+t1+bikePredSec+runSec+t2;
+
+  const optimistic=Math.round(totalSec*0.95);
+  const realistic=totalSec;
+  const conservative=Math.round(totalSec*1.07);
+
+  function secToHMS(s){const h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sc=s%60;return h+':'+String(m).padStart(2,'0')+':'+String(sc).padStart(2,'0');}
+
+  const ctlTarget=80;const ctlProgress=Math.min(100,Math.round((last.ctl/ctlTarget)*100));
+
+  el.innerHTML=`
+  <div style="background:#0F172A;border-radius:11px;padding:15px;border:1px solid #334155;margin-bottom:11px">
+    <div style="font-size:9px;font-weight:800;color:#94A3B8;text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px"><i class="ti ti-settings" aria-hidden="true"></i> Settings — adjust to calibrate predictions</div>
+    <div class="grid3" style="margin-bottom:0">
+      <div><label style="font-size:9px;color:#64748B;display:block;margin-bottom:4px">FTP (watts)</label><input type="number" id="ftpIn" value="${ftp}" min="100" max="400" oninput="fitSettings.ftp=+this.value;rRaceRender()" style="background:#1E293B;border:1px solid #334155;color:#F1F5F9;border-radius:5px;padding:5px 8px;font-size:11px;width:100%"></div>
+      <div><label style="font-size:9px;color:#64748B;display:block;margin-bottom:4px">Swim /100m (sec)</label><input type="number" id="swimIn" value="${fitSettings.swimPace100}" min="60" max="180" oninput="fitSettings.swimPace100=+this.value;rRaceRender()" style="background:#1E293B;border:1px solid #334155;color:#F1F5F9;border-radius:5px;padding:5px 8px;font-size:11px;width:100%"></div>
+      <div><label style="font-size:9px;color:#64748B;display:block;margin-bottom:4px">Race date</label><input type="date" id="rdIn" value="${fitSettings.raceDate}" oninput="fitSettings.raceDate=this.value;rRaceRender()" style="background:#1E293B;border:1px solid #334155;color:#F1F5F9;border-radius:5px;padding:5px 8px;font-size:11px;width:100%"></div>
+    </div>
+  </div>
+  <div id="racePredContent"></div>`;
+  rRaceRender();
+}
+
+function rRaceRender(){
+  const ftp=fitSettings.ftp;
+  const fm=pmcData(),last=fm[fm.length-1]||{ctl:0,atl:0,tsb:0};
+  const raceDate=new Date(fitSettings.raceDate);
+  const daysToRace=Math.max(0,Math.round((raceDate-new Date())/(1000*60*60*24)));
+  const runs=acts.filter(a=>a.pace).sort((a,b)=>new Date(a.date)-new Date(b.date));
+  const avgRecentPace=runs.slice(-5).length?Math.round(runs.slice(-5).reduce((s,r)=>s+r.pace,0)/runs.slice(-5).length):265;
+  const swimSec=Math.round((1900/100)*fitSettings.swimPace100);
+  const t1=90,t2=60;
+  const bikeSpeedKph=30+(ftp-180)*0.055;
+  const bikePredSec=Math.round((90/bikeSpeedKph)*3600);
+  const fatigueAdj=1+Math.max(0,(last.atl-last.ctl)/100*0.05);
+  const runPredPace=Math.round(avgRecentPace*fatigueAdj);
+  const runSec=Math.round(runPredPace*21.1);
+  const totalSec=swimSec+t1+bikePredSec+runSec+t2;
+  const optimistic=Math.round(totalSec*0.95);
+  const conservative=Math.round(totalSec*1.07);
+
+  function secToHMS(s){const h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sc=Math.round(s%60);return h+':'+String(m).padStart(2,'0')+':'+String(sc).padStart(2,'0');}
+  function bikeKph(s){return (90/(s/3600)).toFixed(1);}
+
+  const el=document.getElementById('racePredContent');
+  if(!el)return;
+  el.innerHTML=`
+  <div class="grid3" style="margin-bottom:11px">
+    <div class="panel" style="text-align:center">
+      <div class="stitle" style="justify-content:center"><i class="ti ti-mood-smile" aria-hidden="true"></i>Optimistic</div>
+      <div style="font-size:26px;font-weight:800;color:#34D399">${secToHMS(optimistic)}</div>
+      <div style="font-size:9px;color:#475569;margin-top:3px">Best case execution</div>
+    </div>
+    <div class="panel" style="text-align:center;border-color:#60A5FA">
+      <div class="stitle" style="justify-content:center"><i class="ti ti-target" aria-hidden="true"></i>Realistic</div>
+      <div style="font-size:28px;font-weight:800;color:#60A5FA">${secToHMS(totalSec)}</div>
+      <div style="font-size:9px;color:#475569;margin-top:3px">Based on current fitness</div>
+    </div>
+    <div class="panel" style="text-align:center">
+      <div class="stitle" style="justify-content:center"><i class="ti ti-cloud" aria-hidden="true"></i>Conservative</div>
+      <div style="font-size:26px;font-weight:800;color:#FBBF24">${secToHMS(conservative)}</div>
+      <div style="font-size:9px;color:#475569;margin-top:3px">Hard day / heat</div>
+    </div>
+  </div>
+  <div class="panel" style="margin-bottom:11px">
+    <div class="stitle"><i class="ti ti-sections" aria-hidden="true"></i>Segment breakdown</div>
+    <div style="overflow-x:auto">
+    <table>
+      <thead><tr><th>Segment</th><th>Distance</th><th>Predicted time</th><th>Pace / Speed</th><th>Basis</th></tr></thead>
+      <tbody>
+        <tr><td>${badge('swim')}Swim</td><td>1.9km</td><td style="font-weight:700;color:#60A5FA">${secToHMS(swimSec)}</td><td>${fp(fitSettings.swimPace100/10*100)} /100m</td><td style="font-size:9px;color:#475569">Your swim pace setting</td></tr>
+        <tr><td style="color:#475569">T1</td><td>—</td><td style="color:#475569">${secToHMS(t1)}</td><td>—</td><td style="font-size:9px;color:#475569">Est. transition</td></tr>
+        <tr><td>${badge('bike')}Bike</td><td>90km</td><td style="font-weight:700;color:#FBBF24">${secToHMS(bikePredSec)}</td><td>${bikeKph(bikePredSec)} km/h</td><td style="font-size:9px;color:#475569">FTP ${ftp}W → ${bikeKph(bikePredSec)}kph</td></tr>
+        <tr><td style="color:#475569">T2</td><td>—</td><td style="color:#475569">${secToHMS(t2)}</td><td>—</td><td style="font-size:9px;color:#475569">Est. transition</td></tr>
+        <tr><td>${badge('run')}Run</td><td>21.1km</td><td style="font-weight:700;color:#34D399">${secToHMS(runSec)}</td><td>${fp(runPredPace)}</td><td style="font-size:9px;color:#475569">Recent avg pace + fatigue adj.</td></tr>
+        <tr style="background:#172033"><td colspan="2" style="font-weight:700;color:#F1F5F9">Total finish</td><td style="font-weight:800;font-size:14px;color:#60A5FA">${secToHMS(totalSec)}</td><td colspan="2"></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+  <div class="panel">
+    <div class="stitle"><i class="ti ti-calendar" aria-hidden="true"></i>${daysToRace} days to race — what to improve</div>
+    <div style="display:flex;flex-direction:column;gap:7px;font-size:11px">
+      ${[
+        {label:'Raise FTP by 10W',impact:'~4min faster bike',action:`ftp ${ftp} → ${ftp+10}W`},
+        {label:'Improve swim pace 5s/100m',impact:'~2min faster swim',action:`${fitSettings.swimPace100}s → ${fitSettings.swimPace100-5}s /100m`},
+        {label:'Improve run pace 5s/km',impact:'~2min faster run',action:`${fp(avgRecentPace)} → ${fp(avgRecentPace-5)}`},
+        {label:`Increase CTL to ${Math.round(last.ctl+15)}`,impact:'More aerobic buffer',action:`Current: ${last.ctl} → target: ${Math.round(last.ctl+15)}`}
+      ].map(r=>`<div style="background:#172033;border-radius:6px;padding:9px 11px;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><div><div style="color:#E2E8F0;font-weight:600">${r.label}</div><div style="font-size:9px;color:#475569;margin-top:2px">${r.action}</div></div><span class="pill" style="background:#0d2a1a;color:#4ade80">${r.impact}</span></div>`).join('')}
+    </div>
+  </div>`;
+}
+
+function rInjury(el){
+  const active=injuries.filter(i=>!i.resolved);
+  const resolved=injuries.filter(i=>i.resolved);
+  el.innerHTML=`
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+    <div style="font-size:11px;color:#64748B">${active.length} active · ${resolved.length} resolved</div>
+    <button onclick="toggleInjForm()" class="fbtn ${injFormOpen?'on':''}"><i class="ti ti-plus" aria-hidden="true"></i> Log injury</button>
+  </div>
+  ${injFormOpen?`<div class="panel" style="margin-bottom:11px">
+    <div class="stitle"><i class="ti ti-plus" aria-hidden="true"></i>Log new injury / symptom</div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div class="grid2" style="margin-bottom:0"><div><label style="font-size:9px;color:#64748B;display:block;margin-bottom:3px">Date</label><input type="date" id="iDate" value="${new Date().toISOString().split('T')[0]}" style="width:100%"></div><div><label style="font-size:9px;color:#64748B;display:block;margin-bottom:3px">Body part</label><input type="text" id="iPart" placeholder="e.g. Right shin, Left knee" style="width:100%"></div></div>
+      <div><label style="font-size:9px;color:#64748B;display:block;margin-bottom:3px">Type / diagnosis</label><input type="text" id="iType" placeholder="e.g. Tibial stress reaction, IT band" style="width:100%"></div>
+      <div><label style="font-size:9px;color:#64748B;display:block;margin-bottom:3px">Severity (1=mild, 3=severe)</label>
+        <div style="display:flex;gap:7px">${[1,2,3].map(n=>`<button onclick="document.getElementById('iSev').value='${n}';document.querySelectorAll('.sevBtn').forEach(b=>b.classList.remove('on'));this.classList.add('on')" class="fbtn sevBtn ${n===1?'on':''}" style="flex:1">${['Mild','Moderate','Severe'][n-1]}</button>`).join('')}</div>
+        <input type="hidden" id="iSev" value="1">
+      </div>
+      <div><label style="font-size:9px;color:#64748B;display:block;margin-bottom:3px">Notes</label><textarea id="iNotes" rows="2" placeholder="Symptoms, when it started, what aggravates it..." style="width:100%;resize:none"></textarea></div>
+      <div style="display:flex;gap:7px">
+        <button onclick="saveInj()" style="background:#166534;border:1px solid #16a34a;color:#4ade80;padding:7px 14px;border-radius:6px;cursor:pointer;font-size:11px;font-weight:600">Save injury</button>
+        <button onclick="toggleInjForm()" class="fbtn">Cancel</button>
+      </div>
+    </div>
+  </div>`:''}
+  ${active.length?`<div style="font-size:9px;color:#F87171;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:7px">Active</div>
+  ${active.map(inj=>`<div class="inj-row sev-${inj.severity}">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">
+      <div><span style="font-size:13px;font-weight:700;color:#F1F5F9">${inj.bodyPart}</span><span style="font-size:10px;color:#94A3B8;margin-left:8px">${inj.type}</span></div>
+      <div style="display:flex;gap:5px;align-items:center">
+        <span class="pill" style="background:${inj.severity===3?'#2a0d0d;color:#F87171':inj.severity===2?'#2a1f00;color:#FBBF24':'#0d2a1a;color:#4ade80'}">${['Mild','Moderate','Severe'][inj.severity-1]}</span>
+        <button onclick="resolveInj(${inj.id})" style="background:transparent;border:1px solid #334155;color:#64748B;padding:2px 7px;border-radius:4px;cursor:pointer;font-size:9px">Resolve</button>
+      </div>
+    </div>
+    <div style="font-size:10px;color:#64748B;margin-bottom:5px"><i class="ti ti-calendar" aria-hidden="true"></i> ${inj.date}</div>
+    ${inj.notes?`<div style="font-size:10px;color:#94A3B8;background:#0F172A;padding:7px 10px;border-radius:5px">${inj.notes}</div>`:''}
+    <div style="margin-top:8px;font-size:10px;color:#475569">
+      <strong style="color:#FBBF24">Impact on training:</strong>
+      ${inj.bodyPart.toLowerCase().includes('shin')||inj.bodyPart.toLowerCase().includes('tibia')?`
+        Avoid running until pain-free. <span class="tag ok">Swim</span><span class="tag ok">Bike</span><span class="tag bad">Run — rest</span> Maintain fitness with pool and bike sessions. Consider water running.
+      `:inj.bodyPart.toLowerCase().includes('knee')?`
+        Limit high-cadence cycling. <span class="tag ok">Swim</span><span class="tag warn">Bike — easy only</span><span class="tag warn">Run — reduced</span>
+      `:`<span class="tag ok">Swim</span><span class="tag ok">Bike</span><span class="tag warn">Run — monitor</span>`}
+    </div>
+  </div>`).join('')}`:''}
+  ${resolved.length?`<div style="font-size:9px;color:#475569;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin:12px 0 7px">Resolved</div>
+  ${resolved.map(inj=>`<div class="inj-row" style="border-color:#334155;opacity:.7">
+    <div style="display:flex;justify-content:space-between">
+      <span style="font-size:12px;font-weight:600;color:#94A3B8">${inj.bodyPart} — ${inj.type}</span>
+      <span class="tag ok">Resolved</span>
+    </div>
+    <div style="font-size:9px;color:#475569;margin-top:4px">${inj.date} · ${inj.notes}</div>
+  </div>`).join('')}`:''}
+  <div class="panel" style="margin-top:14px">
+    <div class="stitle"><i class="ti ti-chart-line" aria-hidden="true"></i>Run volume vs injury timeline</div>
+    <div style="position:relative;height:130px"><canvas id="injC" role="img" aria-label="Run volume with injury markers">Run load.</canvas></div>
+    <div style="font-size:9px;color:#475569;margin-top:5px">Red markers = injury logged. Manage load spikes to reduce injury risk.</div>
+  </div>`;
+  setTimeout(()=>{
+    const wks2=weeks();
+    const injDates=injuries.map(i=>i.date.slice(0,7));
+    const colors=wks2.map(w=>injDates.some(d=>w.w.startsWith(d.slice(0,7)))?'#F87171':'#10B981');
+    charts.inj=new Chart(document.getElementById('injC'),{type:'bar',data:{labels:wks2.map(w=>w.w.slice(5)),datasets:[{label:'Run km',data:wks2.map(w=>+w.run.toFixed(1)),backgroundColor:colors,borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#475569',font:{size:8},maxTicksLimit:10}},y:{ticks:{color:'#475569',font:{size:8},callback:v=>v+'km'}}}}});
+  },80);
+}
+
+function toggleInjForm(){injFormOpen=!injFormOpen;render();}
+function resolveInj(id){const i=injuries.find(x=>x.id===id);if(i)i.resolved=true;render();}
+function saveInj(){
+  const part=document.getElementById('iPart').value.trim();
+  const type=document.getElementById('iType').value.trim();
+  if(!part)return;
+  injuries.push({id:Date.now(),date:document.getElementById('iDate').value,bodyPart:part,type:type||'Unknown',severity:parseInt(document.getElementById('iSev').value)||1,status:'monitoring',notes:document.getElementById('iNotes').value.trim(),activities:[],resolved:false});
+  injFormOpen=false;render();
+}
+
+function rLog(el){
+  const filtered=filt==='all'?acts:acts.filter(a=>a.type===filt);
+  const sorted=[...filtered].sort((a,b)=>new Date(b.date)-new Date(a.date));
+  const sel=selId?acts.find(a=>a.id===selId):null;
+  el.innerHTML=`
+  <div style="display:flex;gap:6px;margin-bottom:11px;flex-wrap:wrap;align-items:center">
+    ${['all','swim','bike','run','brick'].map(f=>`<button class="fbtn ${filt===f?'on':''}" onclick="setF('${f}')">${f==='all'?'All':f[0].toUpperCase()+f.slice(1)}</button>`).join('')}
+    <span style="margin-left:auto;font-size:9px;color:#475569">${sorted.length} · ${sorted.filter(a=>a.fitParsed).length} FIT</span>
+  </div>
+  <div class="panel" style="padding:0;overflow:hidden">
+    <div style="overflow-x:auto">
+    <table>
+      <thead><tr><th>Date</th><th>Type</th><th>Activity</th><th>Time</th><th>Dist</th><th>HR</th><th>TSS</th><th>Pace/Power</th><th>Laps</th><th>Source</th></tr></thead>
+      <tbody>
+        ${sorted.map(a=>`<tr onclick="selAct(${a.id})" style="${selId===a.id?'background:#172033;':''}">
+          <td style="color:#64748B;white-space:nowrap">${a.date}</td>
+          <td>${badge(a.type)}</td>
+          <td style="font-weight:600;color:#E2E8F0;white-space:nowrap;max-width:140px;overflow:hidden;text-overflow:ellipsis">${a.name}</td>
+          <td style="white-space:nowrap">${fd(a.dur||0)}</td>
+          <td style="white-space:nowrap">${fdist(a.dist||0,a.type)}</td>
+          <td style="color:${(a.hr||0)>170?'#F87171':'#64748B'}">${a.hr||'—'}</td>
+          <td style="font-weight:700;color:${(a.tss||0)>120?'#F87171':(a.tss||0)>80?'#FBBF24':'#475569'}">${a.tss||'—'}</td>
+          <td style="white-space:nowrap">${a.np?a.np+'W NP':a.pace?fp(a.pace):'—'}</td>
+          <td style="color:${a.laps&&a.laps.length?'#34D399':'#334155'}">${a.laps&&a.laps.length?a.laps.length:'—'}</td>
+          <td><span style="font-size:8px;padding:2px 5px;border-radius:3px;background:${a.fitParsed?'#0d2a1a':'#1a1a2e'};color:${a.fitParsed?'#4ade80':'#475569'}">${a.fitParsed?'FIT':'CSV'}</span></td>
+        </tr>`).join('')}
+      </tbody>
+    </table>
+    </div>
+  </div>
+  ${sel?`<div style="background:#172033;border-radius:9px;border:1px solid #3B82F6;padding:14px;margin-top:11px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <div style="display:flex;align-items:center;gap:7px">${badge(sel.type)}<strong style="font-size:13px;color:#F1F5F9">${sel.name}</strong>${sel.fitParsed?'<span style="font-size:8px;background:#0d2a1a;color:#4ade80;padding:2px 5px;border-radius:3px">FIT</span>':''}</div>
+      <button onclick="selAct(${sel.id})" style="background:none;border:none;cursor:pointer;color:#475569;font-size:15px"><i class="ti ti-x" aria-hidden="true"></i></button>
+    </div>
+    <div style="display:flex;gap:7px;flex-wrap:wrap">
+      ${[['Duration',fd(sel.dur||0),''],['Distance',fdist(sel.dist||0,sel.type),''],['Avg HR',sel.hr||'—',''],['Max HR',sel.hrMax||'—','#F87171'],['TSS',sel.tss||'—',''],sel.np?['NP',sel.np+'W','#F97316']:null,sel.pwr?['Avg Pwr',sel.pwr+'W','']:null,sel.pace?['Pace',fp(sel.pace),'#34D399']:null,sel.cal?['Cal',sel.cal,'']:null,sel.cadence?['Cadence',sel.cadence+'rpm','']:null,sel.elevation?['Elev',sel.elevation+'m','']:null].filter(Boolean).map(([l,v,c])=>`<div style="background:#0F172A;border-radius:6px;padding:8px 11px"><div style="font-size:8px;color:#475569;font-weight:700;text-transform:uppercase">${l}</div><div style="font-size:14px;font-weight:700;color:${c||'#F1F5F9'}">${v}</div></div>`).join('')}
+    </div>
+    ${sel.fitParsed&&sel.pwrStream?`<button onclick="sw('fit');selAct(${sel.id})" class="fbtn" style="margin-top:10px;font-size:10px">View power curve for this activity <i class="ti ti-arrow-right" aria-hidden="true"></i></button>`:''}
+  </div>`:''}`;
+}
+
+function selAct(id){selId=selId===id?null:id;render();}
+function setF(f){filt=f;selId=null;render();}
+
+function parseFIT(buf){
+  const view=new DataView(buf);
+  let off=0;
+  const hLen=view.getUint8(0);off=hLen;
+  const localDefs={};
+  const hrS=[],pwrS=[],cadS=[],altS=[],spdS=[];
+  let laps=[],summary={};
+
+  const SPORT={0:'bike',1:'run',5:'swim',17:'brick',255:'bike'};
+  const LFIELDS={5:'elapsed',6:'distance',9:'calories',18:'avgHR',19:'maxHR',20:'avgCad',13:'avgPwr',14:'maxPwr'};
+  const SFIELDS={7:'elapsed',8:'timer',9:'distance',11:'calories',14:'avgSpd',18:'avgHR',19:'maxHR',20:'avgCad',21:'maxCad',22:'avgPwr',23:'maxPwr',25:'sport'};
+
+  function rF(type,size,le){
+    let v;
+    if(type===0x84||type===0x04){v=size===4?view.getInt32(off,le):size===2?view.getInt16(off,le):view.getInt8(off);}
+    else if(type===0x86||type===0x06||type===0x07||type===0x87){v=size===4?view.getUint32(off,le):size===2?view.getUint16(off,le):view.getUint8(off);}
+    else if(type===0x88){v=view.getFloat32(off,le);}
+    else{let s='';for(let i=0;i<size;i++){const c=view.getUint8(off+i);if(c===0)break;s+=String.fromCharCode(c);}v=s;}
+    off+=size;return v;
+  }
+
+  try{
+    while(off<buf.byteLength-4){
+      const rh=view.getUint8(off);off++;
+      if(rh&0x80){continue;}
+      const localN=rh&0x0F;
+      const isDef=(rh>>6)&1;
+      if(isDef){
+        off++;
+        const le=view.getUint8(off++)===0;
+        const gMsg=view.getUint16(off,le);off+=2;
+        const nF=view.getUint8(off++);
+        const fields=[];
+        for(let i=0;i<nF;i++){fields.push({num:view.getUint8(off++),size:view.getUint8(off++),type:view.getUint8(off++)});}
+        localDefs[localN]={gMsg,fields,le};
+      } else {
+        const def=localDefs[localN];
+        if(!def){break;}
+        const startOff=off;
+        const data={};
+        def.fields.forEach(f=>{try{data[f.num]=rF(f.type,f.size,def.le);}catch(e){off+=f.size;}});
+        const g=def.gMsg;
+        if(g===20){
+          const h=data[3],p=data[7],s=data[6]||data[78],c=data[4],a=data[2]||data[79];
+          if(h&&h>40&&h<250)hrS.push(h);
+          if(p&&p>20&&p<2500)pwrS.push(p);
+          if(s&&s>0&&s<30000){const kph=s/1000*3.6;if(kph>1&&kph<100)spdS.push(s);}
+          if(c&&c>0&&c<250)cadS.push(c);
+          if(a&&a>100&&a<100000)altS.push(a/5-500);
+        }
+        if(g===18){const l={};Object.keys(LFIELDS).forEach(k=>{const v=data[+k];if(v!=null)l[LFIELDS[k]]=v;});if(l.elapsed)laps.push(l);}
+        if(g===18||g===19){Object.keys(SFIELDS).forEach(k=>{const v=data[+k];if(v!=null)summary[SFIELDS[k]]=v;});}
+      }
+    }
+  }catch(e){}
+
+  const sportCode=summary.sport;
+  let sport='bike';
+  if(typeof sportCode==='number')sport=SPORT[sportCode]||'bike';
+  else if(typeof sportCode==='string'){const sl=sportCode.toLowerCase();sport=sl.includes('run')?'run':sl.includes('swim')?'swim':'bike';}
+
+  const dist=(summary.distance||0)/100000;
+  const dur=Math.round((summary.elapsed||summary.timer||0)/1000);
+  const avgHR=Math.round(summary.avgHR||0)||Math.round(hrS.reduce((s,h)=>s+h,0)/(hrS.length||1))||0;
+  const maxHR=Math.round(summary.maxHR||0)||Math.max(0,...hrS);
+  const avgPwr=Math.round(summary.avgPwr||0)||Math.round(pwrS.reduce((s,p)=>s+p,0)/(pwrS.length||1))||0;
+  const avgCad=Math.round(summary.avgCad||0)||Math.round(cadS.reduce((s,c)=>s+c,0)/(cadS.length||1))||0;
+  const cal=Math.round(summary.calories||0);
+  const elev=altS.length>10?Math.max(0,Math.round(altS.slice(1).reduce((s,a,i)=>s+Math.max(0,a-altS[i]),0))):0;
+
+  let np=0;
+  if(pwrS.length>=30){
+    const rolls=[];for(let i=30;i<=pwrS.length;i++){const sl=pwrS.slice(i-30,i);rolls.push(Math.pow(sl.reduce((s,p)=>s+p,0)/30,4));}
+    np=rolls.length?Math.round(Math.pow(rolls.reduce((s,r)=>s+r,0)/rolls.length,.25)):0;
+  }
+
+  let avgPace=0;
+  if(spdS.length&&sport==='run'){const sorted=[...spdS].sort((a,b)=>a-b).slice(Math.floor(spdS.length*.05),Math.floor(spdS.length*.95));avgPace=sorted.length?Math.round(1000/(sorted.reduce((s,p)=>s+p,0)/sorted.length/1000)):0;}
+
+  let tss=0;
+  if(dur>0&&avgHR>0&&!avgPwr){const r=Math.min(1,avgHR/fitSettings.maxHR);tss=Math.round((dur/3600)*r*r*100);}
+  if(avgPwr>0&&dur>0){const IF=np/fitSettings.ftp;tss=Math.round((dur*np*IF)/(fitSettings.ftp*3600)*100);}
+
+  const parsedLaps=laps.map((l,i)=>({n:i+1,dur:Math.round((l.elapsed||0)/1000),dist:parseFloat(((l.distance||0)/100000).toFixed(3)),hr:Math.round(l.avgHR||0)||undefined,pwr:Math.round(l.avgPwr||0)||undefined,cad:Math.round(l.avgCad||0)||undefined})).filter(l=>l.dur>10&&(l.hr||l.pwr));
+
+  return{sport,dist:parseFloat(dist.toFixed(3)),dur,hr:avgHR||undefined,hrMax:maxHR||undefined,pwr:avgPwr||undefined,np:np||undefined,pace:avgPace||undefined,cadence:avgCad||undefined,cal:cal||undefined,tss:tss||undefined,elevation:elev||undefined,laps:parsedLaps,hrStream:hrS.length>30?hrS:undefined,pwrStream:pwrS.length>30?pwrS:undefined,cadStream:cadS.length>30?cadS:undefined};
+}
+
+function parseCSV(text){
+  const lines=text.trim().split('\n').filter(l=>l.trim());
+  if(lines.length<2)return[];
+  const sep=lines[0].includes('\t')?'\t':',';
+  const hdrs=lines[0].split(sep).map(h=>h.trim().toLowerCase().replace(/[^a-z0-9]/g,'_').replace(/_+/g,'_').replace(/^_|_$/g,''));
+  return lines.slice(1).filter(l=>l.trim()).map((line,idx)=>{
+    const vals=line.split(sep);
+    const r={};hdrs.forEach((h,i)=>{const v=(vals[i]||'').trim().replace(/^"|"$/g,'');r[h]=(!isNaN(v)&&v!=='')?parseFloat(v):v;});
+    const tr=(r.activity_type||r.type||r.sport||'').toString().toLowerCase();
+    const type=tr.includes('run')?'run':tr.includes('swim')?'swim':tr.includes('bik')||tr.includes('cycl')?'bike':tr.includes('brick')||tr.includes('trans')?'brick':'run';
+    const rawD=(r.date||r.activity_date||r.start_time||'').toString().slice(0,10).replace(/\//g,'-');
+    let dist=parseFloat(r.distance_km||r.distance||r.total_distance||0)||0;
+    if(dist>1000)dist/=1000;
+    let dur=parseInt(r.duration_sec||r.elapsed_time||r.moving_time||r.total_elapsed_time||0)||0;
+    if(dur>86400)dur=Math.round(dur/1000);
+    return{dist,dur,type,date:rawD,name:(r.title||r.activity_name||r.name||type[0].toUpperCase()+type.slice(1)).toString(),hr:parseInt(r.avg_hr||r.average_heart_rate||r.hr_avg||0)||undefined,hrMax:parseInt(r.max_hr||r.max_heart_rate||0)||undefined,tss:parseFloat(r.training_stress_score||r.tss||0)||undefined,np:parseFloat(r.normalized_power||r.np||0)||undefined,pwr:parseFloat(r.avg_power||r.average_power||0)||undefined,pace:parseFloat(r.avg_pace||r.pace_avg||0)||undefined,cal:parseInt(r.calories||r.total_calories||0)||undefined,laps:[]};
+  }).filter(a=>a.date&&a.date.length===10&&(a.dist>0||a.dur>0));
+}
+
+document.getElementById('fileIn').addEventListener('change',async function(e){
+  const files=Array.from(e.target.files);if(!files.length)return;
+  const msg=document.getElementById('umsg');
+  msg.style.display='inline';msg.style.background='#1E293B';msg.style.color='#60A5FA';msg.textContent=`Parsing ${files.length} file(s)...`;
+  let fitC=0,csvC=0,errs=0;
+  for(const file of files){
+    try{
+      const ext=file.name.split('.').pop().toLowerCase();
+      if(ext==='fit'){
+        const buf=await file.arrayBuffer();
+        const p=parseFIT(buf);
+        const d=new Date(file.lastModified).toISOString().split('T')[0];
+        acts.push({id:Date.now()+Math.random(),date:d,name:file.name.replace(/\.fit$/i,'').replace(/[_-]/g,' '),type:p.sport,...p,fitParsed:true});
+        fitC++;
+      } else if(ext==='csv'){
+        const rows=parseCSV(await file.text());
+        rows.forEach((r,i)=>acts.push({id:Date.now()+i+Math.random(),...r,fitParsed:false}));
+        csvC+=rows.length;
+      }
+    }catch(e){errs++;}
+  }
+  document.getElementById('actBadge').textContent=acts.length+' activities';
+  const ok=fitC+csvC>0;
+  msg.style.background=ok?'#0d2a1a':'#2a0d0d';msg.style.color=ok?'#4ade80':'#F87171';
+  msg.textContent=ok?`✓ ${fitC?fitC+' FIT':''}${fitC&&csvC?' + ':''}${csvC?csvC+' CSV':''}${errs?' ('+errs+' errors)':''}`:`⚠ ${errs} error(s) — check file format`;
+  render();setTimeout(()=>msg.style.display='none',5000);
+  e.target.value='';
+});
+
+document.body.addEventListener('dragover',e=>e.preventDefault());
+document.body.addEventListener('drop',async e=>{
+  e.preventDefault();
+  const files=Array.from(e.dataTransfer.files).filter(f=>f.name.match(/\.(fit|csv)$/i));
+  if(!files.length)return;
+  const dt=new DataTransfer();files.forEach(f=>dt.items.add(f));
+  document.getElementById('fileIn').files=dt.files;
+  document.getElementById('fileIn').dispatchEvent(new Event('change'));
+});
+
+render();
+</script>
